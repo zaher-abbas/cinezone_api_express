@@ -86,6 +86,8 @@ export const categoryMovies = (req, res) => {
 }
 
 export const addMovie = (req, res) => {
+    if (!req.body)
+        return res.sendStatus(400);
     const {title, director, release_year, rating} = req.body;
     database.query('INSERT INTO movie (title, director, release_year, rating) VALUES (?, ?, ?, ?)', [title, director, release_year, rating])
         .then(result => {
@@ -98,6 +100,8 @@ export const addMovie = (req, res) => {
 }
 
 export const updateMovie = (req, res) => {
+    if (!req.body)
+        return res.sendStatus(400);
     const {title, director, release_year, rating, category_id} = req.body;
     const id = parseInt(req.params.id);
     database.query('UPDATE movie SET title = ?, director = ?, release_year = ?, rating = ?, category_id = ? WHERE id = ?', [title, director, release_year, rating, category_id, id])

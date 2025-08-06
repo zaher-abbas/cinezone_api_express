@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 
 dotenv.config();
-import {movies, movieDetail, categoryMovies} from './MovieController.js';
+import {movies, movieDetail, categoryMovies, addMovie, updateMovie, deleteMovie} from './MovieController.js';
 
 const app = express();
 
@@ -27,10 +27,10 @@ app.get('/movies/:id', movieDetail)
 app.get('/categories/:id/movies', categoryMovies)
 
 //POST Request
-//app.post('/books', createBook)
+app.post('/movies', addMovie)
 
 //PUT Request
-//app.put('/books/:id', updateBook)
+app.put('/movies/:id', updateMovie)
 
 //DELETE Request
-//app.delete('/books/:id', deleteBook)
+app.delete('/movies/:id', deleteMovie)

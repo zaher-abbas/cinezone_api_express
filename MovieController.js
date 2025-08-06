@@ -98,36 +98,37 @@ export const addMovie = (req, res) => {
             }
         )
 }
-
-export const updateMovie = (req, res) => {
+//Ici j'ai tenté l'approche de Async/Await qui est plus moderne que l'approche de promesse '.then'
+export const updateMovie = async (req, res) => {
     if (!req.body)
         return res.sendStatus(400);
-    const {title, director, release_year, rating, category_id} = req.body;
-    const id = parseInt(req.params.id);
-    database.query('UPDATE movie SET title = ?, director = ?, release_year = ?, rating = ?, category_id = ? WHERE id = ?', [title, director, release_year, rating, category_id, id])
-        .then(result => {
-            const [resultSet] = result;
-            if (resultSet.affectedRows === 0)
-                return res.sendStatus(404);
-            else
-                return res.sendStatus(200);
-        })
-        .catch(err => {
-            return res.sendStatus(500);
-        })
+    try {
+        const {title, director, release_year, rating, category_id} = req.body;
+        const id = parseInt(req.params.id);
+        const result = await database.query('UPDATE movie SET title = ?, director = ?, release_year = ?, rating = ?, category_id = ? WHERE id = ?', [title, director, release_year, rating, category_id, id])
+        const [resultSet] = result;
+        if (resultSet.affectedRows === 0)
+            return res.sendStatus(404);
+        else
+            return res.sendStatus(200);
+
+    } catch (err) {
+        return res.sendStatus(500);
+    }
 }
 
-export const deleteMovie = (req, res) => {
-    const id = parseInt(req.params.id);
-    database.query('DELETE FROM movie WHERE id = ?', [id])
-        .then(result => {
-            const [resultSet] = result;
-            if (resultSet.affectedRows === 0)
-                return res.sendStatus(404);
-            else
-                return res.sendStatus(204);
-        })
-        .catch(err => {
-            return res.sendStatus(500);
-        })
+//Ici aussi j'ai utilisé l'approche de Async/Await
+export const deleteMovie = async (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+        const result = await database.query('DELETE FROM movie WHERE id = ?', [id])
+        const [resultSet] = result;
+        if (resultSet.affectedRows === 0)
+            return res.sendStatus(404);
+        else
+            return res.sendStatus(204);
+
+    } catch (err) {
+        return res.sendStatus(500);
+    }
 }

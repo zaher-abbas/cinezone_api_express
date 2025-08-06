@@ -8,7 +8,7 @@ const app = express();
 
 app.use(express.json());
 
-const listeningPort = process.env.PORT || 3000; //3000 c'est la valeur de secours au cas ou env.PORT n'existe pas
+const listeningPort = process.env.PORT || 3000; //3000 c'est la valeur de secours au cas où env.PORT n'existe pas
 
 app.listen(listeningPort, () => console.log(`Server is listening on port ${listeningPort}`));
 

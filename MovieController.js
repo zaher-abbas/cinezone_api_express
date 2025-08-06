@@ -8,28 +8,37 @@ export const movies = (req, res) => {
         database.query('SELECT * FROM movie LIMIT ?', [limit])
             .then(result => {
                 const [movies] = result;
-                return res.json(movies);
+                if (movies.length > 0)
+                    return res.json(movies);
+                else
+                    return res.sendStatus(404);
             })
             .catch(err => {
-                console.error(err)
+                return res.sendStatus(500)
             })
     } else if (limit && limit > 0 && minRating) {
         database.query('SELECT * FROM movie WHERE rating >= ? LIMIT ?', [minRating, limit])
             .then(result => {
                 const [movies] = result;
-                return res.json(movies);
+                if (movies.length > 0)
+                    return res.json(movies);
+                else
+                    return res.sendStatus(404);
             })
             .catch(err => {
-                console.error(err)
+                return res.sendStatus(500)
             })
     } else if (!limit && minRating) {
         database.query('SELECT * FROM movie WHERE rating >= ?', [minRating])
             .then(result => {
                 const [movies] = result;
-                return res.json(movies);
+                if (movies.length > 0)
+                    return res.json(movies);
+                else
+                    return res.sendStatus(404);
             })
             .catch(err => {
-                console.error(err)
+                return res.sendStatus(500)
             })
 
 
@@ -37,10 +46,12 @@ export const movies = (req, res) => {
         database.query('SELECT * FROM movie')
             .then(result => {
                 const [movies] = result;
-                return res.json(movies);
+                if (movies.length > 0)
+                    return res.json(movies);
+                else return res.sendStatus(404);
             })
             .catch(err => {
-                console.error(err)
+                return res.sendStatus(500)
             })
     }
 }
@@ -55,7 +66,7 @@ export const movieDetail = (req, res) => {
             return res.sendStatus(404);
         })
         .catch(err => {
-            console.error(err)
+            return res.sendStatus(500);
         })
 }
 

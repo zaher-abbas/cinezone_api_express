@@ -11,3 +11,6 @@ export const database = mysql.createPool({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
 });
+
+database.getConnection().catch(err =>
+    console.error(err + ' ' + 'Error while connecting to database'))

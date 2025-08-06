@@ -1,5 +1,3 @@
-Voici un README.md complet pour votre projet :
-
 ```markdown
 # API Movies Express MySQL
 

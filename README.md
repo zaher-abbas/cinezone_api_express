@@ -1,259 +1,248 @@
+Voici un README.md complet pour votre projet CineZone API :
+
 ```markdown
-# API Movies Express MySQL
+# CineZone API
 
-Une API RESTful simple pour gérer une collection de films, construite avec Express.js et MySQL.
+Une API REST pour la gestion d'une base de données de films, développée avec Node.js, Express et MySQL.
 
-## 🚀 Technologies utilisées
+## 🚀 Fonctionnalités
 
-- **Node.js** - Runtime JavaScript v22.18.0
-- **Express.js 5.1.0** - Framework web
-- **MySQL2 3.14.3** - Client MySQL pour Node.js
-- **dotenv 17.2.1** - Gestion des variables d'environnement
-- **nodemon 3.1.10** - Rechargement automatique en développement
+- Récupération de tous les films avec filtrage par note minimale et limitation
+- Récupération d'un film par son ID
+- Récupération des films par catégorie
+- Ajout de nouveaux films
+- Modification de films existants
+- Suppression de films
+- Tri automatique par titre ou note
 
 ## 📋 Prérequis
 
-Avant de commencer, assurez-vous d'avoir installé :
+Avant d'installer ce projet, assurez-vous d'avoir :
 
-- [Node.js](https://nodejs.org/) (version 14 ou supérieure)
-- [MySQL](https://www.mysql.com/) ou [MariaDB](https://mariadb.org/)
-- [npm](https://www.npmjs.com/) (généralement installé avec Node.js)
+- **Node.js** (version 18 ou supérieure)
+- **npm** (gestionnaire de paquets Node.js, c'est inclus avec Node)
+- **MySQL** (base de données)
+- Un serveur MySQL en fonctionnement
 
-## ⚙️ Installation
+## 🛠️ Installation
 
 ### 1. Cloner le projet
+```
 
-```bash
-git clone <url-du-repository>
+bash
+git clone <url-du-repo>
 cd express-mysql
-```
-```
 
-
+```
 ### 2. Installer les dépendances
-
-```shell script
-npm install
 ```
 
+bash
+npm install
 
-### 3. Configuration de la base de données
+```
+### 3. Configuration de l'environnement
 
-#### Créer la base de données et les tables
+Créez un fichier `.env` à la racine du projet en vous basant sur `.env.example` :
+```
+
+env
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=votre_utilisateur
+DB_PASSWORD=votre_mot_de_passe
+DB_NAME=cinezone_db
+PORT=3000
+
+```
+### 4. Créer la base de données
+
+Créez une base de données MySQL avec une table `movie` :
 
 ```sql
--- Créer la base de données
-CREATE DATABASE movies_db;
-USE movies_db;
+CREATE DATABASE cinezone_db;
 
--- Créer la table des catégories
-CREATE TABLE category (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL
-);
+USE cinezone_db;
 
--- Créer la table des films
 CREATE TABLE movie (
     id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
-    rating DECIMAL(3,1),
-    category_id INT,
+    director VARCHAR(255) NOT NULL,
     release_year INT,
-    FOREIGN KEY (category_id) REFERENCES category(id)
+    rating DECIMAL(3,1),
+    category_id INT
 );
 
--- Insérer quelques données d'exemple
-INSERT INTO category (name) VALUES 
-('Action'), 
-('Drama'), 
-('Comedy'), 
-('Horror');
+-- Exemple de données
+INSERT INTO movie (title, director, release_year, rating, category_id) VALUES
+('The Matrix', 'Lana Wachowski', 1999, 8.7, 1),
+('Inception', 'Christopher Nolan', 2010, 8.8, 1),
+('The Godfather', 'Francis Ford Coppola', 1972, 9.2, 2);
+```
 
-INSERT INTO movie (title, rating, category_id, release_year) VALUES
-('The Dark Knight', 9.0, 1, 2008),
-('Pulp Fiction', 8.9, 2, 1994),
-('The Hangover', 7.7, 3, 2009),
-('The Exorcist', 8.0, 4, 1973);
 ```
 
 
-### 4. Configuration des variables d'environnement
-
-Créez un fichier `.env` à la racine du projet en copiant `.env.example` :
-
-```shell script
-cp .env.example .env
-```
-
-
-Remplissez le fichier `.env` avec vos informations de base de données :
-
-```
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=votre_utilisateur_mysql
-DB_PASSWORD=votre_mot_de_passe_mysql
-DB_NAME=movies_db
-```
-
-
-## 🏃‍♂️ Démarrage
-
-### Mode développement (avec rechargement automatique)
+### 5. Lancer l'application
 
 ```shell script
 npm start
 ```
 
-
-Le serveur sera accessible sur `http://localhost:3001`
+L'API sera accessible sur `http://localhost:3000`
 
 ## 📚 Endpoints de l'API
 
+### 🏠 Accueil
+
+```
+GET /
+```
+
+Retourne un message de bienvenue.
+
 ### 🎬 Films
 
-#### GET /movies
-Récupère tous les films avec filtres optionnels.
+#### Récupérer tous les films
 
-**Paramètres de requête :**
-- `limit` (optionnel) : Limite le nombre de résultats
-- `min_rating` (optionnel) : Note minimum des films
+```
+GET /movies
+```
+
+**Paramètres de requête optionnels :**
+
+- `limit` : Limite le nombre de films retournés
+- `min_rating` : Filtre les films avec une note supérieure ou égale
 
 **Exemples :**
-```shell script
-# Tous les films
-GET http://localhost:3001/movies
 
-# Les 5 premiers films
-GET http://localhost:3001/movies?limit=5
+- `GET /movies` - Tous les films (triés par titre)
+- `GET /movies?limit=5` - Les 5 premiers films (triés par titre)
+- `GET /movies?min_rating=8.0` - Films avec une note ≥ 8.0 (triés par note décroissante)
+- `GET /movies?limit=3&min_rating=7.5` - Les 3 meilleurs films avec une note ≥ 7.5
 
-# Films avec une note >= 8.0
-GET http://localhost:3001/movies?min_rating=8.0
+**Réponse :** `200 OK` avec la liste des films ou `404 Not Found`
 
-# Les 3 meilleurs films (note >= 8.5)
-GET http://localhost:3001/movies?limit=3&min_rating=8.5
+#### Récupérer un film par ID
+
+```
+GET /movies/:id
 ```
 
+**Réponse :** `200 OK` avec les détails du film ou `404 Not Found`
 
-**Réponse :**
-```json
-[
-  {
-    "id": 1,
-    "title": "The Dark Knight",
-    "rating": 9.0,
-    "category_id": 1,
-    "release_year": 2008
-  }
-]
+#### Récupérer les films par catégorie
+
+```
+GET /categories/:id/movies
 ```
 
+**Réponse :** `200 OK` avec la liste des films de la catégorie ou `404 Not Found`
 
-#### GET /movies/:id
-Récupère un film spécifique par son ID.
+#### Ajouter un nouveau film
 
-**Exemple :**
-```shell script
-GET http://localhost:3001/movies/1
+```
+POST /movies
 ```
 
+**Corps de la requête :**
 
-**Réponse :**
 ```json
 {
-  "id": 1,
-  "title": "The Dark Knight",
-  "rating": 9.0,
-  "category_id": 1,
-  "release_year": 2008
+  "title": "Titre du film",
+  "director": "Nom du réalisateur",
+  "release_year": 2023,
+  "rating": 8.5
 }
 ```
 
+**Réponse :** `201 Created` ou `500 Internal Server Error`
 
-**Codes de statut :**
-- `200` : Film trouvé
-- `404` : Film non trouvé
+#### Modifier un film existant
 
-### 🏷️ Catégories
-
-#### GET /categories/:id/movies
-Récupère tous les films d'une catégorie spécifique.
-
-**Exemple :**
-```shell script
-# Tous les films d'action (category_id = 1)
-GET http://localhost:3001/categories/1/movies
+```
+PUT /movies/:id
 ```
 
+**Corps de la requête :**
+
+```json
+{
+  "title": "Nouveau titre",
+  "director": "Nouveau réalisateur",
+  "release_year": 2024,
+  "rating": 9.0,
+  "category_id": 1
+}
+```
 
 **Réponse :**
-```json
-[
-  {
-    "id": 1,
-    "title": "The Dark Knight",
-    "rating": 9.0,
-    "category_id": 1,
-    "release_year": 2008
-  }
-]
+
+- `200 OK` - Film modifié avec succès
+- `404 Not Found` - Film introuvable
+- `500 Internal Server Error` - Erreur serveur
+
+#### Supprimer un film
+
+```
+DELETE /movies/:id
 ```
 
+**Réponse :**
 
-**Codes de statut :**
-- `200` : Films trouvés
-- `404` : Aucun film dans cette catégorie
+- `204 No Content` - Film supprimé avec succès
+- `404 Not Found` - Film introuvable
+- `500 Internal Server Error` - Erreur serveur
 
-## 🛠️ Structure du projet
+## 🔧 Scripts disponibles
+
+- `npm start` : Démarre le serveur avec nodemon (redémarrage automatique)
+- `npm test` : Lance les tests (non configuré actuellement)
+
+## 📦 Technologies utilisées
+
+- **Node.js 22.18.0** : Environnement d'exécution JavaScript
+- **Express.js 5.1.0** : Framework web minimaliste
+- **MySQL2 3.14.3** : Client MySQL pour Node.js
+- **dotenv 17.2.1** : Gestion des variables d'environnement
+- **nodemon 3.1.10** : Redémarrage automatique du serveur (développement)
+
+## 🏗️ Structure du projet
 
 ```
 express-mysql/
 ├── index.js              # Point d'entrée de l'application
-├── MovieController.js    # Contrôleurs pour les endpoints des films
+├── MovieController.js    # Contrôleurs pour les films
 ├── database.js           # Configuration de la base de données
 ├── package.json          # Dépendances et scripts
-├── .env.example          # Exemple de variables d'environnement
 ├── .env                  # Variables d'environnement (à créer)
-└── README.md             # Documentation
+├── .env.example          # Exemple de configuration
+├── .gitignore           # Fichiers ignorés par Git
+└── README.md            # Documentation
 ```
 
+## 🤝 Contribution
 
-## 🔧 Développement
+1. Forkez le projet
+2. Créez votre branche de fonctionnalité (`git checkout -b feature/AmazingFeature`)
+3. Committez vos changements (`git commit -m 'Add some AmazingFeature'`)
+4. Poussez vers la branche (`git push origin feature/AmazingFeature`)
+5. Ouvrez une Pull Request
 
-### Scripts disponibles
+## 📄 Licence
 
-```shell script
-# Démarrer le serveur en mode développement
-npm start
+Ce projet est sous licence ISC.
 
-# (Tests non configurés actuellement)
-npm test
+## ⚠️ Notes importantes
+
+- Assurez-vous que votre serveur MySQL est démarré avant de lancer l'application
+- Ne committez jamais le fichier `.env` dans votre repository
+- Les erreurs 500 indiquent généralement un problème de connexion à la base de données
+
+## 📞 Support
+
+Pour toute question ou problème, n'hésitez pas à ouvrir une issue sur le repository du projet.
+
 ```
-
-
-### Ajout de nouvelles fonctionnalités
-
-Les endpoints commentés dans `index.js` peuvent être implémentés :
-- `POST /movies` - Créer un nouveau film
-- `PUT /movies/:id` - Mettre à jour un film
-- `DELETE /movies/:id` - Supprimer un film
-
-## ❗ Dépannage
-
-### Erreur de connexion à la base de données
-- Vérifiez que MySQL/MariaDB est démarré
-- Contrôlez vos variables d'environnement dans `.env`
-- Assurez-vous que l'utilisateur MySQL a les bonnes permissions
-
-### Port déjà utilisé
-Si le port 3001 est occupé, modifiez `listeningPort` dans `index.js`
-
-### Module non trouvé
-Vérifiez que toutes les dépendances sont installées avec `npm install`
-
-## 📝 Licence
-
-ISC
-```
-Ce README.md couvre tous les aspects importants de votre projet avec un guide d'installation complet et une documentation claire des endpoints disponibles.
+Ce README.md fournit une documentation complète et professionnelle pour votre projet CineZone API, incluant l'installation, la configuration, tous les endpoints avec des exemples, et les informations techniques nécessaires pour les développeurs.
 ```

@@ -11,7 +11,7 @@ export const movieValidator = [
         .isLength({max: 4}).withMessage('Year must be 4 digits long')
     ,
     body('rating').notEmpty().withMessage('Rating is required')
-        .isFloat({min: 1, max: 10}).withMessage('Rating must be a number'),
+        .isFloat({min: 1, max: 10}).withMessage('Rating must be a float between 1 and 10'),
     handleValidationErrors
 
 ]

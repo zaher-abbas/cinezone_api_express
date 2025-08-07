@@ -1,11 +1,15 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import {logger} from "./middlewares/logger.js";
+import {movieValidator} from "./middlewares/movieValidator.js";
 
 dotenv.config();
 import {movies, movieDetail, categoryMovies, addMovie, updateMovie, deleteMovie} from './MovieController.js';
+import {requireAdminRole} from "./middlewares/requireAdminRole.js";
 
 const app = express();
 
+app.use(logger);
 app.use(express.json());
 
 const listeningPort = process.env.PORT || 3000; //3000 c'est la valeur de secours au cas où env.PORT n'existe pas
@@ -27,10 +31,10 @@ app.get('/movies/:id', movieDetail)
 app.get('/categories/:id/movies', categoryMovies)
 
 //POST Request
-app.post('/movies', addMovie)
+app.post('/movies', movieValidator, addMovie)
 
 //PUT Request
 app.put('/movies/:id', updateMovie)
 
 //DELETE Request
-app.delete('/movies/:id', deleteMovie)
+app.delete('/movies/:id', requireAdminRole, deleteMovie)

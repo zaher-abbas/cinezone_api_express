@@ -86,8 +86,6 @@ export const categoryMovies = (req, res) => {
 }
 
 export const addMovie = (req, res) => {
-    if (!req.body)
-        return res.sendStatus(400);
     const {title, director, release_year, rating} = req.body;
     database.query('INSERT INTO movie (title, director, release_year, rating) VALUES (?, ?, ?, ?)', [title, director, release_year, rating])
         .then(result => {

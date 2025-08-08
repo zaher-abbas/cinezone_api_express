@@ -6,6 +6,10 @@ import {movieValidator} from "./middlewares/movieValidator.js";
 dotenv.config();
 import {movies, movieDetail, categoryMovies, addMovie, updateMovie, deleteMovie} from './Controller/MovieController.js';
 import {requireAdminRole} from "./middlewares/requireAdminRole.js";
+import {userValidator} from "./middlewares/userValidator.js";
+import {emailNotExistsValidator} from "./middlewares/emailNotExistsValidator.js";
+import {hashPassword} from "./middlewares/hashPassword.js";
+import {registerUser} from "./Controller/UserController.js";
 
 const app = express();
 
@@ -21,20 +25,23 @@ app.get('/', (req, res) => {
     res.send('Welcome to CineZone API')
 })
 
-//Get with 'limit' and 'category' queries
+//Get movies with 'limit' and 'category' queries
 app.get('/movies', movies)
 
-//GET with id
+//GET movie with id
 app.get('/movies/:id', movieDetail)
 
 //Get movies by category
 app.get('/categories/:id/movies', categoryMovies)
 
-//POST Request
+//POST movie Request
 app.post('/movies', movieValidator, addMovie)
 
-//PUT Request
+//PUT movie Request
 app.put('/movies/:id', movieValidator, updateMovie)
 
-//DELETE Request
+//DELETE movie Request
 app.delete('/movies/:id', requireAdminRole, deleteMovie)
+
+//authentification, Post user
+app.post('/users', userValidator, emailNotExistsValidator, hashPassword, registerUser);

@@ -1,4 +1,4 @@
-import {database} from "../database.js";
+import {database} from "../Config/database.js";
 
 export const movies = (req, res) => {
     const limit = parseInt(req.query.limit)

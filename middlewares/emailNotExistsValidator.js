@@ -1,0 +1,11 @@
+import {database} from "../Config/database.js";
+
+export const emailNotExistsValidator = async (req, res, next) => {
+    const {email} = req.body;
+    const result = await database.query('SELECT * FROM user WHERE email = ?', [email]);
+    const [users] = result;
+    if (users.length > 0)
+        return res.status(409).send('Email already exists');
+    next();
+
+}

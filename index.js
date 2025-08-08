@@ -4,7 +4,7 @@ import {logger} from "./middlewares/logger.js";
 import {movieValidator} from "./middlewares/movieValidator.js";
 
 dotenv.config();
-import {movies, movieDetail, categoryMovies, addMovie, updateMovie, deleteMovie} from './MovieController.js';
+import {movies, movieDetail, categoryMovies, addMovie, updateMovie, deleteMovie} from './Controller/MovieController.js';
 import {requireAdminRole} from "./middlewares/requireAdminRole.js";
 
 const app = express();
@@ -34,7 +34,7 @@ app.get('/categories/:id/movies', categoryMovies)
 app.post('/movies', movieValidator, addMovie)
 
 //PUT Request
-app.put('/movies/:id', updateMovie)
+app.put('/movies/:id', movieValidator, updateMovie)
 
 //DELETE Request
 app.delete('/movies/:id', requireAdminRole, deleteMovie)

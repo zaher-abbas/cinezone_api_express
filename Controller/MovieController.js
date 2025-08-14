@@ -1,6 +1,6 @@
 import {database} from "../Config/database.js";
 
-export const movies = (req, res) => {
+export const list = (req, res) => {
     const limit = parseInt(req.query.limit)
     const minRating = parseFloat(req.query.min_rating)
 
@@ -55,7 +55,7 @@ export const movies = (req, res) => {
             })
     }
 }
-export const movieDetail = (req, res) => {
+export const show = (req, res) => {
     const id = req.params.id;
     database.query('SELECT * FROM movie WHERE id = ?', [id])
         .then(result => {
@@ -70,7 +70,7 @@ export const movieDetail = (req, res) => {
         })
 }
 
-export const categoryMovies = (req, res) => {
+export const listByCategory = (req, res) => {
     const id = req.params.id;
     database.query('SELECT * FROM movie WHERE category_id = ? ORDER BY title ASC', [id])
         .then(result => {
@@ -85,7 +85,7 @@ export const categoryMovies = (req, res) => {
         })
 }
 
-export const addMovie = (req, res) => {
+export const insert = (req, res) => {
     const {title, director, release_year, rating} = req.body;
     database.query('INSERT INTO movie (title, director, release_year, rating) VALUES (?, ?, ?, ?)', [title, director, release_year, rating])
         .then(result => {
@@ -97,7 +97,7 @@ export const addMovie = (req, res) => {
         )
 }
 //Ici j'ai tenté l'approche de Async/Await qui est plus moderne que l'approche de promesse '.then'
-export const updateMovie = async (req, res) => {
+export const update = async (req, res) => {
     if (!req.body)
         return res.sendStatus(400);
     try {
@@ -116,7 +116,7 @@ export const updateMovie = async (req, res) => {
 }
 
 //Ici aussi j'ai utilisé l'approche de Async/Await
-export const deleteMovie = async (req, res) => {
+export const remove = async (req, res) => {
     try {
         const id = parseInt(req.params.id);
         const result = await database.query('DELETE FROM movie WHERE id = ?', [id])

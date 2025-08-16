@@ -1,5 +1,3 @@
-Voici un README.md complet pour votre projet CineZone API :
-
 ```markdown
 # CineZone API
 
@@ -14,6 +12,9 @@ Une API REST pour la gestion d'une base de données de films, développée avec 
 - Modification de films existants
 - Suppression de films
 - Tri automatique par titre ou note
+- Creation des comptes d'utilisateurs.
+- Connexion des utilisateurs.
+- Affichage du profil de l'utilisateur connecté
 
 ## 📋 Prérequis
 
@@ -53,6 +54,7 @@ DB_USER=votre_utilisateur
 DB_PASSWORD=votre_mot_de_passe
 DB_NAME=cinezone_db
 PORT=3000
+JWT_SECRET=votre_code_secret_jwt
 
 ```
 ### 4. Créer la base de données
@@ -145,14 +147,18 @@ GET /categories/:id/movies
 POST /movies
 ```
 
-**Corps de la requête :**
+- **Description** : Créer un nouveau film
+- **Authentification** : Requise (JWT)
+- **Body** : Données du film (validées par movieValidator)
+  **Corps de la requête :**
 
 ```json
 {
   "title": "Titre du film",
   "director": "Nom du réalisateur",
   "release_year": 2023,
-  "rating": 8.5
+  "rating": 8.5,
+  "category_id": 1
 }
 ```
 
@@ -164,7 +170,13 @@ POST /movies
 PUT /movies/:id
 ```
 
-**Corps de la requête :**
+**Description** : Modifier un film existant
+
+- **Paramètres** :
+    - `id` : ID du film à modifier
+- **Authentification** : Requise (JWT)
+- **Body** : Données modifiées du film
+  **Corps de la requête :**
 
 ```json
 {
@@ -194,6 +206,49 @@ DELETE /movies/:id
 - `404 Not Found` - Film introuvable
 - `500 Internal Server Error` - Erreur serveur
 
+---
+
+### Endpoints Utilisateurs
+
+#### POST `/users`
+
+- **Description** : Créer un compte utilisateur
+- **Body** :
+  ```json
+  {
+    "name": "string (max 100 caractères)",
+    "email": "string (format email valide, max 255 caractères)",
+    "password": "string (min 8 caractères, max 255 caractères)"
+  }
+  ```
+- **Authentification** : Non requise
+- **Validation** : Email unique, format email valide
+
+#### POST `/login`
+
+- **Description** : Connexion utilisateur
+- **Body** :
+  ```json
+  {
+    "email": "string",
+    "password": "string"
+  }
+  ```
+- **Authentification** : Non requise
+- **Réponse** : Cookie JWT (valide 24h)
+
+#### GET `/profile`
+
+- **Description** : Récupérer le profil de l'utilisateur connecté
+- **Authentification** : Requise (JWT)
+- **Réponse** :
+  ```json
+  {
+    "name": "string",
+    "email": "string"
+  }
+  ```
+
 ## 🔧 Scripts disponibles
 
 - `npm start` : Démarre le serveur avec nodemon (redémarrage automatique)
@@ -206,6 +261,27 @@ DELETE /movies/:id
 - **MySQL2 3.14.3** : Client MySQL pour Node.js
 - **dotenv 17.2.1** : Gestion des variables d'environnement
 - **nodemon 3.1.10** : Redémarrage automatique du serveur (développement)
+- **jsonwebtoken** (v9.0.2) - Authentification par JWT
+- **cookie-parser** (v1.4.7) - Parsing des cookies
+- **express-validator** (v7.2.1) - Validation des données d'entrée
+- **bcrypt** (v6.0.0) - Hashage des mots de passe
+
+## Authentification
+
+L'API utilise JWT (JSON Web Tokens) pour l'authentification :
+
+- **Connexion** : Endpoint `/login` retourne un cookie JWT
+- **Durée** : Token valide pendant 24 heures
+- **Storage** : Cookie HTTP-only
+- **Protection** : Middleware `requireAuth` pour les endpoints protégés
+- **Admin** : Middleware `requireAdminRole` pour les actions administrateur
+
+## Sécurité
+
+- **Hashage des mots de passe** : bcrypt
+- **Cookies sécurisés** : HTTP-only
+- **Validation des entrées** : express-validator
+- **Authentification** : JWT avec secret
 
 ## 🏗️ Structure du projet
 

@@ -5,7 +5,7 @@ export const list = (req, res) => {
     const minRating = parseFloat(req.query.min_rating)
 
     if (limit && limit > 0 && !minRating) {
-        database.query('SELECT * FROM movie ORDER BY title ASC LIMIT ?', [limit])
+        database.query('SELECT * FROM movie ORDER BY title LIMIT ?', [limit])
             .then(result => {
                 const [movies] = result;
                 if (movies.length > 0)
@@ -43,7 +43,7 @@ export const list = (req, res) => {
 
 
     } else {
-        database.query('SELECT * FROM movie ORDER BY title ASC')
+        database.query('SELECT * FROM movie ORDER BY title')
             .then(result => {
                 const [movies] = result;
                 if (movies.length > 0)
@@ -72,7 +72,7 @@ export const show = (req, res) => {
 
 export const listByCategory = (req, res) => {
     const id = req.params.id;
-    database.query('SELECT * FROM movie WHERE category_id = ? ORDER BY title ASC', [id])
+    database.query('SELECT * FROM movie WHERE category_id = ? ORDER BY title', [id])
         .then(result => {
             const [movies] = result;
             if (movies.length > 0) {

@@ -46,14 +46,14 @@ npm install
 Créez un fichier `.env` à la racine du projet en vous basant sur `.env.example` :
 ```
 
-env
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=votre_utilisateur
-DB_PASSWORD=votre_mot_de_passe
-DB_NAME=cinezone_db
-PORT=3000
-JWT_SECRET=votre_code_secret_jwt
+   ```env
+   PORT=3000
+   JWT_SECRET=votre_code_secret_jwt
+   DB_HOST=localhost
+   DB_USER=votre_utilisateur_mysql
+   DB_PASSWORD=votre_mot_de_passe_mysql
+   DB_NAME=votre_base_de_donnees
+   ```
 
 ```
 ### 4. Créer la base de données

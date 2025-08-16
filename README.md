@@ -22,8 +22,7 @@ Avant d'installer ce projet, assurez-vous d'avoir :
 
 - **Node.js** (version 18 ou supérieure)
 - **npm** (gestionnaire de paquets Node.js, c'est inclus avec Node)
-- **MySQL** (base de données)
-- Un serveur MySQL en fonctionnement
+- **MySQL** (serveur base de données MySQL en fonctionnement)
 
 ## 🛠️ Installation
 
@@ -59,7 +58,7 @@ JWT_SECRET=votre_code_secret_jwt
 ```
 ### 4. Créer la base de données
 
-Créez une base de données MySQL avec une table `movie` :
+Créez une base de données MySQL avec les tables: `movie`, 'category', et 'user' :
 
 ```sql
 CREATE DATABASE cinezone_db;
@@ -103,7 +102,7 @@ GET /
 
 Retourne un message de bienvenue.
 
-### 🎬 Films
+### 🎬 Endpoints Films
 
 #### Récupérer tous les films
 
@@ -208,7 +207,7 @@ DELETE /movies/:id
 
 ---
 
-### Endpoints Utilisateurs
+### 👤 Endpoints Utilisateurs
 
 #### POST `/users`
 
@@ -266,7 +265,7 @@ DELETE /movies/:id
 - **express-validator** (v7.2.1) - Validation des données d'entrée
 - **bcrypt** (v6.0.0) - Hashage des mots de passe
 
-## Authentification
+## 🔑 Authentification
 
 L'API utilise JWT (JSON Web Tokens) pour l'authentification :
 
@@ -276,7 +275,7 @@ L'API utilise JWT (JSON Web Tokens) pour l'authentification :
 - **Protection** : Middleware `requireAuth` pour les endpoints protégés
 - **Admin** : Middleware `requireAdminRole` pour les actions administrateur
 
-## Sécurité
+## 🔐 Sécurité
 
 - **Hashage des mots de passe** : bcrypt
 - **Cookies sécurisés** : HTTP-only

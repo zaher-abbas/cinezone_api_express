@@ -21,12 +21,18 @@ import {insert as insertUser, login, profile} from "./Controller/UserController.
 import {requireAuth} from "./middlewares/requireAuth.js";
 import {findUserByEmail} from "./middlewares/findUserByEmail.js";
 import {verifyPassword} from "./middlewares/verifyPassword.js";
+import cors from 'cors';
 
 const app = express();
 
 app.use(logger);
 app.use(express.json());
 app.use(cookieParser());
+app.use((cors({
+    origin: 'http://localhost:4200',
+    optionsSuccessStatus: 200,
+    credentials: true,
+})));
 
 const listeningPort = process.env.PORT || 3000; //3000 c'est la valeur de secours au cas où env.PORT n'existe pas
 

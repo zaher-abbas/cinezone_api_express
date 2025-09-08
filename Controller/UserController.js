@@ -34,3 +34,4 @@ export async function profile(req, res) {
         return res.sendStatus(500);
     }
 }
+

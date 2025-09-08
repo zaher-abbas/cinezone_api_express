@@ -8,7 +8,7 @@ export const insert = async (req, res) => {
     try {
         const {name, email, hashedPassword} = req.body;
         await database.query('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', [name, email, hashedPassword]);
-        return res.sendStatus(201).send({message: 'User created successfully'});
+        return res.status(201).send({message: 'User created successfully'});
     } catch (err) {
         return res.sendStatus(500);
     }
@@ -21,7 +21,7 @@ export const login = (req, res) => {
     const secret = process.env.JWT_SECRET;
     const token = jwt.sign({sub: id, iat: iat, exp: exp}, secret);
     res.cookie('token', token, {httpOnly: true, maxAge: 1000 * 60 * 60 * 24}); //cookie for one day
-    return res.sendStatus(200).send({message: 'Login successful'});
+    return res.status(200).send({message: 'Login successful'});
 }
 
 export async function profile(req, res) {

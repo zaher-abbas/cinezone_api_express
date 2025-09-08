@@ -1,5 +1,4 @@
 import {database} from "../Config/database.js";
-import {body} from "express-validator";
 
 export const findUserByEmail = async (req, res, next) => {
     const {email} = req.body;

@@ -5,7 +5,7 @@ export const verifyPassword = async (req, res, next) => {
     try {
         const ok = await bcrypt.compare(password, req.user.password);
         if (!ok)
-            return res.status(401).send('Email or password is incorrect');
+            return res.status(401).send({message: 'Email or password is incorrect'});
         next();
     } catch (err) {
         return res.sendStatus(500);

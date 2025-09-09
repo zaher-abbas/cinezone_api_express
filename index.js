@@ -11,13 +11,13 @@ import {
     listByCategory as listByCategory,
     insert as insertMovie,
     update as updateMovie,
-    remove as deleteMovie
+    remove as deleteMovie, listCategories
 } from './Controller/MovieController.js';
 import {requireAdminRole} from "./middlewares/requireAdminRole.js";
 import {userValidator} from "./middlewares/userValidator.js";
 import {emailNotExistsValidator} from "./middlewares/emailNotExistsValidator.js";
 import {hashPassword} from "./middlewares/hashPassword.js";
-import {insert as insertUser, login, profile} from "./Controller/UserController.js";
+import {insert as insertUser, login, logout, profile} from "./Controller/UserController.js";
 import {requireAuth} from "./middlewares/requireAuth.js";
 import {findUserByEmail} from "./middlewares/findUserByEmail.js";
 import {verifyPassword} from "./middlewares/verifyPassword.js";
@@ -49,6 +49,9 @@ app.get('/movies', listMovies)
 //GET movie with id
 app.get('/movies/:id', showMovie)
 
+//Get categories
+app.get('/categories', listCategories)
+
 //Get movies by category
 app.get('/categories/:id/movies', listByCategory)
 
@@ -69,3 +72,6 @@ app.post('/login', findUserByEmail, verifyPassword, login)
 
 //user profile
 app.get('/profile', requireAuth, profile)
+
+//logout
+app.post('/logout', requireAuth, logout);

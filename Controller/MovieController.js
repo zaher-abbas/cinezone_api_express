@@ -43,7 +43,7 @@ export const list = (req, res) => {
 
 
     } else {
-        database.query('SELECT * FROM movies ORDER BY title')
+        database.query('SELECT m.id, m.title, m.director, m.rating, m.release_year, m.category_id, c.name AS category FROM movies AS m LEFT JOIN categories AS c ON c.id = m.category_id ORDER BY m.title')
             .then(result => {
                 const [movies] = result;
                 if (movies.length > 0)
@@ -57,7 +57,7 @@ export const list = (req, res) => {
 }
 export const show = (req, res) => {
     const id = req.params.id;
-    database.query('SELECT * FROM movies WHERE id = ?', [id])
+    database.query('SELECT m.id, m.title, m.director, m.release_year, m.rating, m.category_id, c.name AS category FROM movies AS m LEFT JOIN categories AS c ON c.id = m.category_id  WHERE m.id = ?', [id])
         .then(result => {
             const [movies] = result;
             if (movies.length > 0) {
@@ -72,7 +72,7 @@ export const show = (req, res) => {
 
 export const listByCategory = (req, res) => {
     const id = req.params.id;
-    database.query('SELECT * FROM movies WHERE category_id = ? ORDER BY title', [id])
+    database.query('SELECT m.id, m.title, m.director, m.release_year, m.rating, m.category_id, c.name AS category FROM movies AS m LEFT JOIN categories AS c ON c.id = m.category_id WHERE category_id = ? ORDER BY title', [id])
         .then(result => {
             const [movies] = result;
             if (movies.length > 0) {
@@ -83,6 +83,19 @@ export const listByCategory = (req, res) => {
         .catch(err => {
             return res.sendStatus(500);
         })
+}
+
+export const  listCategories = async (req, res) => {
+    try {
+        const result = await database.query('SELECT * FROM categories');
+        const [categories] = result;
+        if (categories.length === 0)
+            return res.status(404).send({message: 'No categories found'});
+        return res.json(categories);
+    }
+    catch {
+        return res.status(500).send({ message: 'Internal server error'});
+    }
 }
 
 export const insert = (req, res) => {

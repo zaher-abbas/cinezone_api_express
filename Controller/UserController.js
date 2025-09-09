@@ -35,3 +35,8 @@ export async function profile(req, res) {
     }
 }
 
+export const logout = (req, res) => {
+    res.clearCookie('token');
+    res.status(200).send({message: 'Logout successful'});
+}
+

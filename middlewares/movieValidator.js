@@ -15,6 +15,9 @@ export const movieValidator = [
     body('rating').trim()
         .notEmpty().withMessage('Rating is required')
         .isFloat({min: 1, max: 10}).withMessage('Rating must be a float between 1 and 10'),
+    body('category_id')
+        .notEmpty().withMessage('Category is required')
+        .isInt({min: 1}).withMessage('Category must be a integer'),
     handleValidationErrors
 
 ]

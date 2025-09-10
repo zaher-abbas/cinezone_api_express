@@ -99,8 +99,8 @@ export const  listCategories = async (req, res) => {
 }
 
 export const insert = (req, res) => {
-    const {title, director, release_year, rating} = req.body;
-    database.query('INSERT INTO movies (title, director, release_year, rating) VALUES (?, ?, ?, ?)', [title, director, release_year, rating])
+    const {title, director, release_year, rating, category_id} = req.body;
+    database.query('INSERT INTO movies (title, director, release_year, rating, category_id) VALUES (?, ?, ?, ?, ?)', [title, director, release_year, rating, category_id])
         .then(result => {
             return res.status(201).send({message: 'Movie created successfully'});
         })
@@ -109,7 +109,7 @@ export const insert = (req, res) => {
             }
         )
 }
-//Ici j'ai tenté l'approche de Async/Await qui est plus moderne que l'approche de promesse '.then'
+//Ici, j'ai tenté l'approche de Async/Await qui est plus moderne que l'approche de promesse '.then'
 export const update = async (req, res) => {
     if (!req.body)
         return res.sendStatus(400).send({message: 'No data provided'});
@@ -128,7 +128,7 @@ export const update = async (req, res) => {
     }
 }
 
-//Ici aussi j'ai utilisé l'approche de Async/Await
+//Ici aussi, j'ai utilisé l'approche de Async/Await
 export const remove = async (req, res) => {
     try {
         const id = parseInt(req.params.id);

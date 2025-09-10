@@ -62,7 +62,7 @@ app.post('/movies', requireAuth, movieValidator, insertMovie)
 app.put('/movies/:id', requireAuth, movieValidator, updateMovie)
 
 //DELETE movie Request
-app.delete('/movies/:id', requireAdminRole, deleteMovie)
+app.delete('/movies/:id', deleteMovie)
 
 //Register Post user
 app.post('/users', userValidator, emailNotExistsValidator, hashPassword, insertUser);

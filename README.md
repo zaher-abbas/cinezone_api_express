@@ -1,4 +1,3 @@
-```markdown
 # CineZone API
 
 Une API REST pour la gestion d'une base de données de films, développée avec Node.js, Express et MySQL.
@@ -28,23 +27,16 @@ Avant d'installer ce projet, assurez-vous d'avoir :
 
 ### 1. Cloner le projet
 ```
-
-bash
-git clone <url-du-repo>
+git clone https://github.com/zaher-abbas/cinezone_api_express.git
 cd express-mysql
-
 ```
 ### 2. Installer les dépendances
 ```
-
-bash
 npm install
-
 ```
 ### 3. Configuration de l'environnement
 
 Créez un fichier `.env` à la racine du projet en vous basant sur `.env.example` :
-```
 
    ```env
    PORT=3000
@@ -55,32 +47,9 @@ Créez un fichier `.env` à la racine du projet en vous basant sur `.env.example
    DB_NAME=votre_base_de_donnees
    ```
 
+### 4. Créer la base de données, et les tables, avec des données, en executant le fichier:
 ```
-### 4. Créer la base de données
-
-Créez une base de données MySQL avec les tables: `movie`, 'category', et 'user' :
-
-```sql
-CREATE DATABASE cinezone_db;
-
-USE cinezone_db;
-
-CREATE TABLE movie (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    title VARCHAR(255) NOT NULL,
-    director VARCHAR(255) NOT NULL,
-    release_year INT,
-    rating DECIMAL(3,1),
-    category_id INT
-);
-
--- Exemple de données
-INSERT INTO movie (title, director, release_year, rating, category_id) VALUES
-('The Matrix', 'Lana Wachowski', 1999, 8.7, 1),
-('Inception', 'Christopher Nolan', 2010, 8.8, 1),
-('The Godfather', 'Francis Ford Coppola', 1972, 9.2, 2);
-```
-
+cinezone.sql
 ```
 
 

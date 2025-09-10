@@ -135,9 +135,9 @@ export const remove = async (req, res) => {
         const result = await database.query('DELETE FROM movies WHERE id = ?', [id])
         const [resultSet] = result;
         if (resultSet.affectedRows === 0)
-            return res.sendStatus(404).send({message: 'Movie not found'});
+            return res.status(404).send({message: 'Movie not found'});
         else
-            return res.sendStatus(204).send({message: 'Movie deleted successfully'});
+            return res.status(204).send({message: 'Movie deleted successfully'});
 
     } catch (err) {
         return res.sendStatus(500);

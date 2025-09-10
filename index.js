@@ -74,4 +74,4 @@ app.post('/login', findUserByEmail, verifyPassword, login)
 app.get('/profile', requireAuth, profile)
 
 //logout
-app.post('/logout', requireAuth, logout);
+app.get('/logout', requireAuth, logout);

@@ -119,9 +119,9 @@ export const update = async (req, res) => {
         const result = await database.query('UPDATE movies SET title = ?, director = ?, release_year = ?, rating = ?, category_id = ? WHERE id = ?', [title, director, release_year, rating, category_id, id])
         const [resultSet] = result;
         if (resultSet.affectedRows === 0)
-            return res.sendStatus(404).send({message: 'Movie not found'});
+            return res.status(404).send({message: 'Movie not found'});
         else
-            return res.sendStatus(200).send({message: 'Movie updated successfully'});
+            return res.status(200).send({message: 'Movie updated successfully'});
 
     } catch (err) {
         return res.sendStatus(500);

@@ -102,10 +102,10 @@ export const insert = (req, res) => {
     const {title, director, release_year, rating} = req.body;
     database.query('INSERT INTO movies (title, director, release_year, rating) VALUES (?, ?, ?, ?)', [title, director, release_year, rating])
         .then(result => {
-            return res.sendStatus(201).send({message: 'Movie created successfully'});
+            return res.status(201).send({message: 'Movie created successfully'});
         })
         .catch(err => {
-                return res.sendStatus(500);
+                return res.status(500).send({message: 'Internal server error'});
             }
         )
 }

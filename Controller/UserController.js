@@ -20,7 +20,11 @@ export const login = (req, res) => {
     const exp = iat + (60 * 60 * 24); //expires after one day
     const secret = process.env.JWT_SECRET;
     const token = jwt.sign({sub: id, iat: iat, exp: exp}, secret);
-    res.cookie('token', token, {httpOnly: true, maxAge: 1000 * 60 * 60 * 24}); //cookie for one day
+    res.cookie('token', token, {
+        httpOnly: process.env.COOKIE_HTTP_ONLY,
+        secure: process.env.COOKIE_SECURE,
+        sameSite: process.env.COOKIE_SAME_SITE,
+        maxAge: 1000 * 60 * 60 * 24}); //cookie for one day
     return res.status(200).send({message: 'Login successful'});
 }
 
